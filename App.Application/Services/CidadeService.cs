@@ -9,40 +9,30 @@ using System.Threading.Tasks;
 
 namespace App.Application.Services
 {
-    public class PessoaService : IPessoaService
+    public class CidadeService : ICidadeService
     {
-        private IRepositoryBase<Pessoa> _repository { get; set; }
-        public PessoaService(IRepositoryBase<Pessoa> repository)
+        private IRepositoryBase<Cidade> _repository { get; set; }
+        public CidadeService(IRepositoryBase<Cidade> repository)
         {
             _repository = repository;
         }
-        public Pessoa BuscaPorId(Guid id)
+        public Cidade BuscaPorId(Guid id)
         {
 
             var obj = _repository.Query(x => x.Id == id).FirstOrDefault();
             return obj;
         }
 
-        public List<Pessoa> listaPessoas()
+        public List<Cidade> listaCidade()
         {
-            return _repository.Query(x => 1 == 1)
-                .Select(p => new Pessoa
-                {
-                    Id = p.Id,
-                    Nome = p.Nome,
-                    Peso = p.Peso,
-                    Cidade = new Cidade
-                    {
-                        Nome = p.Cidade.Nome
-                    }
-                }).ToList();
+            return _repository.Query(x => 1 == 1).ToList();
         }
 
-        public void Salvar(Pessoa obj)
+        public void Salvar(Cidade obj)
         {
             if (String.IsNullOrEmpty(obj.Nome))
             {
-                throw new Exception("Informe o nome");
+                throw new Exception("Informe a cidade");
             }
             _repository.Save(obj);
             _repository.SaveChanges();
